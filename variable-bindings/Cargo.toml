@@ -1,0 +1,6 @@
+[package]
+name = "variable-bindings"
+version = "0.1.0"
+authors = ["PumpkinSeed <qwer.kocka@gmail.com>"]
+
+[dependencies]
