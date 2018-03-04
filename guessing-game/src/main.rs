@@ -1,10 +1,24 @@
+// we defined the rand in the [dependencies]
+// we can use it by calling the extern crate
+extern crate rand;
+
 // get the std::io it's attach a second prelude
 // here we can use an umber of useful io-related things
 use std::io;
 
+// put the Ordering to the scope for the compare
+use std::cmp::Ordering;
+
+// we would use a method of the Rng which 
+// requires be in scope to work
+use rand::Rng;
+
 // the main function is the entry point of the program
 fn main() {
-    
+    // rand::thread_rng() get a copy of the random number generator
+    // gen_range waits two arguments, min and max
+    let secret_number = rand::thread_rng().gen_range(1, 101);
+
     // the println!() is a macro that prints a string to the screen
     println!("Guess the number!");
     println!("Please input your guess.");
@@ -22,5 +36,17 @@ fn main() {
     io::stdin().read_line(&mut guess)
         .expect("Failed to read line");
 
-    println!("You guessed: {}", guess);
+    // here we 'shadow' the guess variable, it's lets us re-use the variable
+    let guess: u32 = guess.trim().parse()
+        .expect("Please type a number!");
+
+    // cmp method can be called on anything that can be compared
+    // takes a reference what we want to compare to
+    // we use match statement to determine exactly what kind of 
+    // Ordering it is, Ordering is an enum
+    match guess.cmp(&secret_number) {
+        Ordering::Less => println!("Too small!"),
+        Ordering::Greater => println!("Too big!"),
+        Ordering::Equal => println!("You win!"),
+    }
 }
