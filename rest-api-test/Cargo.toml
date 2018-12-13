@@ -1,0 +1,14 @@
+[package]
+name = "rest-api-test"
+version = "0.1.0"
+authors = ["PumpkinSeed <qwer.kocka@gmail.com>"]
+
+[dependencies]
+rustless = "0.10.0"
+hyper = "0.10.5"
+rustc-serialize = "0.3"
+valico = "1"
+time = "0.1.40"
+
+[dependencies.iron]
+version = "*"
