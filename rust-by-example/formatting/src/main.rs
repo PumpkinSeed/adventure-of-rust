@@ -33,7 +33,7 @@ impl Display for Color {
     fn fmt(&self, f: &mut Formatter) -> fmt::Result {
         write!(
             f,
-            "RGB ({r}, {g}, {b}) 0x{rX:02}{gX:02}{bX:02}",
+            "RGB ({r}, {g}, {b}) 0x{rX:0>2}{gX:0>2}{bX:0>2}",
             r = self.red,
             g = self.green,
             b = self.blue,
