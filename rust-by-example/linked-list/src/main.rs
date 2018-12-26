@@ -1,4 +1,4 @@
-use List::*;
+use crate::List::*;
 
 enum List {
     // Cons: Tuple struct that wraps an element and a pointer to the next node
@@ -54,7 +54,9 @@ fn main() {
 
     // Prepend some elements
     list = list.prepend(1);
-    list = list.prepend(2);
+    list = list.prepend(4);
+    list = list.prepend(8);
+    list = list.prepend(6);
     list = list.prepend(3);
 
     // Show the final state of the list
