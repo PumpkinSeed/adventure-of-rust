@@ -1,6 +1,7 @@
 #![feature(core_intrinsics)]
 
 use std::convert::From;
+use std::string::ToString;
 
 #[derive(Debug)]
 struct Number {
@@ -10,6 +11,16 @@ struct Number {
 impl From<i32> for Number {
     fn from(item: i32) -> Self {
         Number { value: item }
+    }
+}
+
+struct Circle {
+    radius: i32,
+}
+
+impl ToString for Circle {
+    fn to_string(&self) -> String {
+        format!("Circle of radius {:?}", self.radius)
     }
 }
 
@@ -31,5 +42,15 @@ fn main() {
     let int = 5;
     let num: Number = int.into();
     println!("My number is {:?}", num);
-    print_type_of(&num)
+    print_type_of(&num);
+
+    let circle = Circle { radius: 6 };
+    println!("{}", circle.to_string());
+
+    // Parse
+    let parsed: i32 = "5".parse().unwrap();
+    let turbo_parsed = "10".parse::<i32>().unwrap();
+
+    let sum = parsed + turbo_parsed;
+    println!("Sum: {}", sum);
 }
