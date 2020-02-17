@@ -76,6 +76,12 @@ fn main() {
 
     // -----------------------
     // Return Values and Scope
+
+    // returning values also can transform the ownership
+
+    let s12 = String::from("hello");     // s12 comes into scope
+
+    let s13 = takes_and_gives_back(s12);  // s12 is moved into takes_and_gives_back, which also moves its return value into s13
 }
 
 fn takes_ownership(some_string: String) { // some_string comes into scope
@@ -85,3 +91,9 @@ fn takes_ownership(some_string: String) { // some_string comes into scope
 fn makes_copy(some_integer: i32) { // some_integer comes into scope
     println!("{}", some_integer);
 } // some_integer goes out of scope, nothing special happens
+
+
+// takes_and_gives_back will take a String and return one
+fn takes_and_gives_back(a_string: String) -> String { // a_string comes into scope
+    a_string  // a_string is returned and moves out to the calling function
+}
