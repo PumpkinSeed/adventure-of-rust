@@ -2,6 +2,7 @@ use std::fs::File;
 use std::io::Read;
 use std::io;
 use std::io::ErrorKind;
+use std::net::IpAddr;
 
 fn main() {
     // Rust's commitment to reliability extends to error handling
@@ -122,6 +123,25 @@ fn main() {
     //    }
     // Box<dyn Error> is called a trait object, currently means any kind of error
     // using ? in a main function with this return type is allowed
+
+    // --------------------------
+    // To panic! or Not to panic!
+
+    // when code panics there is no way to recover
+    // call unwrap when you have some other logic that ensures the Result will have an Ok value
+
+    let home: IpAddr = "127.0.0.1".parse().unwrap();
+
+    // -----------------------------
+    // Guidelines for Error Handling
+    // - The bad state is not something that’s expected to happen occasionally
+    // - Your code after this point needs to rely on not being in this bad state
+    // - There’s not a good way to encode this information in the types you use
+
+    // ------------------------------------
+    // Creating Custom Types for Validation
+
+    // starts at L177
 }
 
 fn read_username_from_file() -> Result<String, io::Error> {
@@ -154,3 +174,22 @@ fn read_file() -> Result<String, io::Error> {
     fs::read_to_string("hello.txt")
 }
 
+pub struct Guess {
+    value: i32,
+}
+
+impl Guess {
+    pub fn new(value: i32) -> Guess {
+        if value < 1 || value > 100 {
+            panic!("Guess value must be between 1 and 100, got {}", value);
+        }
+
+        Guess {
+            value
+        }
+    }
+
+    pub fn value(&self) -> i32 {
+        self.value.clone()
+    }
+}
