@@ -54,6 +54,8 @@ impl<T> Drop for List<T> {
     }
 }
 
+// IntoIter
+//
 pub struct IntoIter<T>(List<T>);
 
 impl<T> List<T> {
@@ -68,6 +70,20 @@ impl<T> Iterator for IntoIter<T> {
         self.0.pop()
     }
 }
+
+// Iter
+//
+pub struct Iter<T> {
+    next: Option<&Node<T>>,
+}
+
+impl<T> List<T> {
+    pub fn iter(&self) -> Iter<T> {
+        Iter {next: self.head.map(|node| &node)}
+    }
+}
+
+
 
 #[cfg(test)]
 mod test {
