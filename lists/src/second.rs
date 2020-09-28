@@ -83,7 +83,16 @@ impl<T> List<T> {
     }
 }
 
+impl<T> Iterator for Iter<T> {
+    type Item = &T;
 
+    fn next(&mut self) -> Option<Self::Item> {
+        self.next.map(|node| {
+            self.next = node.next.map(|node| &node);
+            &node.elem
+        })
+    }
+}
 
 #[cfg(test)]
 mod test {
