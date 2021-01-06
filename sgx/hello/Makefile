@@ -25,8 +25,8 @@ endif
 
 ifeq ($(SGX_DEBUG), 1)
 	ifeq ($(SGX_PRERELEASE), 1)
-	$(error Cannot set SGX_DEBUG and SGX_PRERELEASE at the same time!!)
-endif
+		$(error Cannot set SGX_DEBUG and SGX_PRERELEASE at the same time!!)
+	endif
 endif
 
 ifeq ($(SGX_DEBUG), 1)

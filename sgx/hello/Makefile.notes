@@ -1,0 +1,28 @@
+L1-3
+Set the default values if it's not set yet
+
+L5-6
+Includes the buildenv.mk
+
+L8-12
+Set the SGX_ARCH to x86 (32 bit), if LONG_BIT is 32 or CXXFLAGS has the -m32 flag
+---
+CXXFLAGS = CMale env var, determine the cxx compilation App_C_Flags
+
+L14-24
+Set SGX_COMMON_CFLAGS, SGX_LIBRARY_PATH, SGX_ENCLAVE_SIGNER, SGX_EDGER8R based on SGX_ARCH
+---
+Edger8r is a tool that parses the EDL files and generates the trusted and untrusted bridges 
+and proxies to interface between the application and the enclave
+
+L26-30
+Release flag validation
+
+L32-36
+Add CFLAGS based on Debug mode
+---
+-o controls the overall level of optimization (0 turns off optimization entirely, 2 recommended level of optimization)
+-g compile the binary for debugging
+
+L38
+Add fstack-protector to CFLAGS. Enables stack protection for vulnerable functions that ....
