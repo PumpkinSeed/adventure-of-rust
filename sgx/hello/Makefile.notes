@@ -26,3 +26,12 @@ Add CFLAGS based on Debug mode
 
 L38
 Add fstack-protector to CFLAGS. Enables stack protection for vulnerable functions that ....
+
+L40-45
+Setup custom paths for @TODO
+
+L49
+Set enclave files @TODO
+
+L53-60
+
