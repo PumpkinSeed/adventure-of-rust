@@ -1,8 +1,16 @@
+extern crate web_sys;
+
 mod utils;
 
 use std::fmt;
 use std::fmt::Formatter;
 use wasm_bindgen::prelude::*;
+
+macro_rules! log {
+    ( $( $t:tt )* ) => {
+        web_sys::console::log_1(&format!( $( $t )* ).into());
+    }
+}
 
 // When the `wee_alloc` feature is enabled, use `wee_alloc` as the global
 // allocator.
@@ -16,6 +24,15 @@ static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
 pub enum Cell {
     Dead = 0,
     Alive = 1,
+}
+
+impl Cell {
+    fn toggle(&mut self) {
+        *self = match *self {
+            Cell::Dead => Cell::Alive,
+            Cell::Alive => Cell::Dead,
+        }
+    }
 }
 
 #[wasm_bindgen]
@@ -62,6 +79,8 @@ impl Universe {
 #[wasm_bindgen]
 impl Universe {
     pub fn new() -> Universe {
+        utils::set_panic_hook();
+
         let width = 64;
         let height = 64;
         let cells = (0..width * height)
@@ -96,11 +115,16 @@ impl Universe {
 
     pub fn set_height(&mut self, height: u32) {
         self.height = height;
-        self.cells = (0..self.width*height).map(|_i| Cell::Dead).collect();
+        self.cells = (0..self.width * height).map(|_i| Cell::Dead).collect();
     }
 
     pub fn cells(&self) -> *const Cell {
         self.cells.as_ptr()
+    }
+
+    pub fn toggle_cell(&mut self, row: u32, column: u32) {
+        let idx = self.get_index(row, column);
+        self.cells[idx].toggle();
     }
 
     pub fn tick(&mut self) {
@@ -112,6 +136,14 @@ impl Universe {
                 let cell = self.cells[idx];
                 let live_neighbors = self.live_neighbour_count(row, col);
 
+                // log!(
+                //     "cell[{}, {}] is initially {:?} and has {} live neighbors",
+                //     row,
+                //     col,
+                //     cell,
+                //     live_neighbors
+                // );
+
                 let next_cell = match (cell, live_neighbors) {
                     (Cell::Alive, x) if x < 2 => Cell::Dead,
                     (Cell::Alive, 2) | (Cell::Alive, 3) => Cell::Alive,
@@ -119,6 +151,8 @@ impl Universe {
                     (Cell::Dead, 3) => Cell::Alive,
                     (otherwise, _) => otherwise,
                 };
+
+                //log!("     it becomes {:?}", next_cell);
 
                 next[idx] = next_cell;
             }
@@ -139,7 +173,7 @@ impl fmt::Display for Universe {
                 let symbol = if cell == Cell::Dead { '◻' } else { '◼' };
                 write!(f, "{}", symbol)?;
             }
-            write!(f, "\n");
+            write!(f, "\n")?;
         }
         Ok(())
     }
